@@ -1,0 +1,372 @@
+/* You can add global styles to this file, and also import other style files */
+
+@use '@angular/material' as mat;
+@use '@angular/material-experimental' as matx;
+
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+
+$theme: matx.define-theme((
+  color: (
+    theme-type: light,
+    primary: matx.$m3-azure-palette,
+    tertiary: matx.$m3-blue-palette,
+  )
+));
+
+
+@include mat.core();
+@include matx.color-variants-back-compat($theme);
+
+:root {
+  @include mat.all-component-themes($theme);
+  --md-sys-color-primary: var(--md-sys-color-primary-light);
+  --md-sys-color-on-primary: var(--md-sys-color-on-primary-light);
+  --md-sys-color-primary-container: var(--md-sys-color-primary-container-light);
+  --md-sys-color-on-primary-container: var(
+      --md-sys-color-on-primary-container-light
+  );
+  --md-sys-color-secondary: var(--md-sys-color-secondary-light);
+  --md-sys-color-on-secondary: var(--md-sys-color-on-secondary-light);
+  --md-sys-color-secondary-container: var(
+      --md-sys-color-secondary-container-light
+  );
+  --md-sys-color-on-secondary-container: var(
+      --md-sys-color-on-secondary-container-light
+  );
+  --md-sys-color-tertiary: var(--md-sys-color-tertiary-light);
+  --md-sys-color-on-tertiary: var(--md-sys-color-on-tertiary-light);
+  --md-sys-color-tertiary-container: var(
+      --md-sys-color-tertiary-container-light
+  );
+  --md-sys-color-on-tertiary-container: var(
+      --md-sys-color-on-tertiary-container-light
+  );
+  --md-sys-color-error: var(--md-sys-color-error-light);
+  --md-sys-color-on-error: var(--md-sys-color-on-error-light);
+  --md-sys-color-error-container: var(--md-sys-color-error-container-light);
+  --md-sys-color-on-error-container: var(
+      --md-sys-color-on-error-container-light
+  );
+  --md-sys-color-outline: var(--md-sys-color-outline-light);
+  --md-sys-color-background: var(--md-sys-color-background-light);
+  --md-sys-color-on-background: var(--md-sys-color-on-background-light);
+  --md-sys-color-surface: var(--md-sys-color-surface-light);
+  --md-sys-color-on-surface: var(--md-sys-color-on-surface-light);
+  --md-sys-color-surface-variant: var(--md-sys-color-surface-variant-light);
+  --md-sys-color-on-surface-variant: var(
+      --md-sys-color-on-surface-variant-light
+  );
+  --md-sys-color-inverse-surface: var(--md-sys-color-inverse-surface-light);
+  --md-sys-color-inverse-on-surface: var(
+      --md-sys-color-inverse-on-surface-light
+  );
+  --md-sys-color-inverse-primary: var(--md-sys-color-inverse-primary-light);
+  --md-sys-color-shadow: var(--md-sys-color-shadow-light);
+  --md-sys-color-surface-tint: var(--md-sys-color-surface-tint-light);
+  --md-sys-color-outline-variant: var(--md-sys-color-outline-variant-light);
+  --md-sys-color-scrim: var(--md-sys-color-scrim-light);
+}
+.primary {
+  background-color: var(--md-sys-color-primary);
+}
+
+.primary-text {
+  color: var(--md-sys-color-primary);
+}
+
+.on-primary {
+  background-color: var(--md-sys-color-on-primary);
+}
+
+.on-primary-text {
+  color: var(--md-sys-color-on-primary);
+}
+
+.primary-container {
+  background-color: var(--md-sys-color-primary-container);
+}
+
+.primary-container-text {
+  color: var(--md-sys-color-primary-container);
+}
+
+.on-primary-container {
+  background-color: var(--md-sys-color-on-primary-container);
+}
+
+.on-primary-container-text {
+  color: var(--md-sys-color-on-primary-container);
+}
+
+.secondary {
+  background-color: var(--md-sys-color-secondary);
+}
+
+.secondary-text {
+  color: var(--md-sys-color-secondary);
+}
+
+.on-secondary {
+  background-color: var(--md-sys-color-on-secondary);
+}
+
+.on-secondary-text {
+  color: var(--md-sys-color-on-secondary);
+}
+
+.secondary-container {
+  background-color: var(--md-sys-color-secondary-container);
+}
+
+.secondary-container-text {
+  color: var(--md-sys-color-secondary-container);
+}
+
+.on-secondary-container {
+  background-color: var(--md-sys-color-on-secondary-container);
+}
+
+.on-secondary-container-text {
+  color: var(--md-sys-color-on-secondary-container);
+}
+
+.tertiary {
+  background-color: var(--md-sys-color-tertiary);
+}
+
+.tertiary-text {
+  color: var(--md-sys-color-tertiary);
+}
+
+.on-tertiary {
+  background-color: var(--md-sys-color-on-tertiary);
+}
+
+.on-tertiary-text {
+  color: var(--md-sys-color-on-tertiary);
+}
+
+.tertiary-container {
+  background-color: var(--md-sys-color-tertiary-container);
+}
+
+.tertiary-container-text {
+  color: var(--md-sys-color-tertiary-container);
+}
+
+.on-tertiary-container {
+  background-color: var(--md-sys-color-on-tertiary-container);
+}
+
+.on-tertiary-container-text {
+  color: var(--md-sys-color-on-tertiary-container);
+}
+
+.error {
+  background-color: var(--md-sys-color-error);
+}
+
+.error-text {
+  color: var(--md-sys-color-error);
+}
+
+.on-error {
+  background-color: var(--md-sys-color-on-error);
+}
+
+.on-error-text {
+  color: var(--md-sys-color-on-error);
+}
+
+.error-container {
+  background-color: var(--md-sys-color-error-container);
+}
+
+.error-container-text {
+  color: var(--md-sys-color-error-container);
+}
+
+.on-error-container {
+  background-color: var(--md-sys-color-on-error-container);
+}
+
+.on-error-container-text {
+  color: var(--md-sys-color-on-error-container);
+}
+
+.outline {
+  background-color: var(--md-sys-color-outline);
+}
+
+.outline-text {
+  color: var(--md-sys-color-outline);
+}
+
+.background {
+  background-color: var(--md-sys-color-background);
+}
+
+.background-text {
+  color: var(--md-sys-color-background);
+}
+
+.on-background {
+  background-color: var(--md-sys-color-on-background);
+}
+
+.on-background-text {
+  color: var(--md-sys-color-on-background);
+}
+
+.surface {
+  background-color: var(--md-sys-color-surface);
+}
+
+.surface-text {
+  color: var(--md-sys-color-surface);
+}
+
+.on-surface {
+  background-color: var(--md-sys-color-on-surface);
+}
+
+.on-surface-text {
+  color: var(--md-sys-color-on-surface);
+}
+
+.surface-variant {
+  background-color: var(--md-sys-color-surface-variant);
+}
+
+.surface-variant-text {
+  color: var(--md-sys-color-surface-variant);
+}
+
+.on-surface-variant {
+  background-color: var(--md-sys-color-on-surface-variant);
+}
+
+.on-surface-variant-text {
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.inverse-surface {
+  background-color: var(--md-sys-color-inverse-surface);
+}
+
+.inverse-surface-text {
+  color: var(--md-sys-color-inverse-surface);
+}
+
+.inverse-on-surface {
+  background-color: var(--md-sys-color-inverse-on-surface);
+}
+
+.inverse-on-surface-text {
+  color: var(--md-sys-color-inverse-on-surface);
+}
+
+.inverse-primary {
+  background-color: var(--md-sys-color-inverse-primary);
+}
+
+.inverse-primary-text {
+  color: var(--md-sys-color-inverse-primary);
+}
+
+.shadow {
+  background-color: var(--md-sys-color-shadow);
+}
+
+.shadow-text {
+  color: var(--md-sys-color-shadow);
+}
+
+.surface-tint {
+  background-color: var(--md-sys-color-surface-tint);
+}
+
+.surface-tint-text {
+  color: var(--md-sys-color-surface-tint);
+}
+
+.outline-variant {
+  background-color: var(--md-sys-color-outline-variant);
+}
+
+.outline-variant-text {
+  color: var(--md-sys-color-outline-variant);
+}
+
+.scrim {
+  background-color: var(--md-sys-color-scrim);
+}
+
+.scrim-text {
+  color: var(--md-sys-color-scrim);
+}
+
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+/* My Style Customization */
+html {
+  --mat-expansion-header-collapsed-state-height: 100px!important;
+  --mat-form-field-subscript-text-line-height: 0px!important;
+  --mat-expansion-header-expanded-state-height: 100px!important;
+  --mat-expansion-header-text-color: var(--md-sys-color-primary)!important;
+  --mat-expansion-header-text-size: 14px!important;
+  --mdc-form-field-label-text-size: 16px!important;
+  --md-sys-typescale-label-medium-font-size: 14px!important;
+}
+.mat-content {
+  flex-direction: column !important;
+}
+
+.mdc-notched-outline__notch {
+  border-right: none!important;
+}
+
+.material-symbols-outlined {
+  padding: 0px 10px 0px 0px!important;
+}
+
+.mat-expansion-panel-header-title {
+  display: flex!important;
+}
+
+.mat-expansion-panel-header-title > p {
+  padding-bottom: 0px!important;
+  margin: 0px!important;
+  font-weight: bold!important;
+  font-size: 16px!important;
+}
+.mat-expansion-panel-header-description {
+  padding-left: 34px!important;
+}
+
+.body-large {
+  margin: 0 !important;
+}
+
+.mdc-switch .mdc-switch__handle-track {
+  width: inherit!important;
+}
+
+.mdc-switch--selected .mdc-switch__handle-track {
+  width: inherit!important;
+  transform: inherit!important;
+}
+
+.mat-mdc-slider .mdc-slider__track--inactive {
+  background-color: black!important;
+}

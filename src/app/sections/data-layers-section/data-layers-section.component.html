@@ -1,0 +1,238 @@
+@if (requestError) {
+
+  
+<div class="error-container on-error-container-text">
+  <mat-expansion-panel
+    (opened)="expanded = true"
+    (closed)="expanded = false"
+    style="background-color: #fcdfdc"
+  >
+    <mat-expansion-panel-header class="pt-4">
+      <mat-panel-title>
+        <span class="material-symbols-outlined">{{ icon }}</span>
+        <p>{{ title }}</p>
+      </mat-panel-title>
+      <mat-panel-description>{{
+        requestError.error.status
+      }}</mat-panel-description>
+    </mat-expansion-panel-header>
+
+    <div class="grid place-items-center py-2 space-y-4">
+      <div class="grid place-items-center">
+        <p class="body-medium">
+          Error on <code>dataLayers</code> {{layerId}} request
+        </p>
+        <p class="title-large">ERROR {{ requestError.error.code }}</p>
+        <p class="body-medium">
+          <code>{{ requestError.error.status }}</code>
+        </p>
+        <p class="label-medium">{{ requestError.error.message }}</p>
+      </div>
+      <button
+        mat-stroked-button
+        extended
+        color="danger"
+        (click)="showDataLayer(true)"
+      >
+        Retry
+        <mat-icon>refresh</mat-icon>
+      </button>
+    </div>
+  </mat-expansion-panel>
+</div>
+
+} @else {
+<mat-expansion-panel (opened)="expanded = true" (closed)="expanded = false">
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      <span class="material-symbols-outlined">{{ icon }}</span>
+      <p>{{ title }}</p>
+    </mat-panel-title>
+    <mat-panel-description>Monthly sunshine</mat-panel-description>
+  </mat-expansion-panel-header>
+  <div class="flex flex-col space-y-2 px-2">
+    <span class="outline-text label-medium">
+      <b>{{ title }}</b> provides raw and processed imagery and granular details
+      on an area surrounding a location.
+    </span>
+
+    <!-- Dropdown -->
+    <mat-form-field appearance="outline" style="margin-top: 20px">
+      <mat-label>Monthly sunshine</mat-label>
+      <mat-select [(value)]="layerId" (selectionChange)="onSelectionChange()">
+        @for (option of dataLayerOptionKeys; track option) {
+        <mat-option [value]="dataLayerOptionValues[$index]">{{
+          option
+        }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    @if (layerId=='none') {
+    <div></div>
+    } @else if(!layer) {
+    <div class="pt-2">
+      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    </div>
+    } @else { @if (layer.id == 'hourlyShade') {
+    <!-- Calendar -->
+    <mat-form-field>
+      <mat-label>Select Day</mat-label>
+      <input matInput [matDatepicker]="picker" [formControl]="datePicker" (dateChange)="setMonthAndDay('change', $event)">
+      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+    }
+
+    <span class="outline-text label-medium">
+      @if (imageryQuality === 'HIGH') {
+      <p><b>Low altitude aerial imagery</b> available.</p>
+      <p>Imagery and DSM data were processed at <b>10 cm/pixel</b>.</p>
+      }@else if (imageryQuality === 'MEDIUM') {
+      <p><b>AI augmented aerial imagery</b> available.</p>
+      <p>Imagery and DSM data were processed at <b>25 cm/pixel</b>.</p>
+      }@else if (imageryQuality == 'LOW') {
+      <p><b>AI augmented aerial or satellite imagery</b> available.</p>
+      <p>Imagery and DSM data were processed at <b>50 cm/pixel</b>.</p>
+      }
+    </span>
+
+    <mat-slide-toggle
+      [formControl]="solarPanelsToggle"
+      (change)="onSolarPanelsChange()"
+    >
+      Solar panels</mat-slide-toggle
+    >
+    <mat-slide-toggle
+      [formControl]="roofOnlyToggle"
+      (change)="onRoofOnlyChange()"
+    >
+      Roof Only</mat-slide-toggle
+    >
+    @if (layerId == 'monthlyFlux' || layerId == 'hourlyShade') {
+    <mat-slide-toggle
+      [formControl]="playAnimationToggle"
+      (change)="onPlayAnimationChange()"
+    >
+      Play Animation</mat-slide-toggle
+    >
+    }
+  }
+  
+  @if (layer) {
+    <div class="grid justify-items-end">
+      <button
+      mat-raised-button
+      style="background-color: #ebddf6; color: black"
+      (click)="openDialog()">
+        API Response
+      </button>
+      <!-- <md-filled-tonal-button role={undefined} on:click={() => apiResponseDialog.show()}>
+        API response
+      </md-filled-tonal-button> -->
+    </div>
+  }
+  </div>
+</mat-expansion-panel>
+}
+
+
+
+
+
+
+@if (expanded == true && layer) {
+<div class="absolute top-0 left-0 w-72">
+  <div class="m-2">
+    <app-summary-card [icon]="icon" [title]="title" [rows]="summaryCardRows">
+      <div class="flex flex-col space-y-4">
+        <p class="outline-text">
+          @if (layerId == 'mask') {
+          <p>The building mask image: one bit per pixel saying whether that pixel is considered to
+          be part of a rooftop or not.</p>
+          } @else if (layerId == 'dsm'){
+        <p>An image of the DSM (Digital Surface Model) of the region. Values are in meters above
+          EGM96 geoid (i.e., sea level). Invalid locations (where we don't have data) are stored
+          as -9999.</p>
+          } @else if (layerId == 'rgb'){
+        <p>An image of RGB data (aerial photo) of the region.</p>
+          } @else if (layerId == 'annualFlux'){
+        <p>The annual flux map (annual sunlight on roofs) of the region. Values are kWh/kW/year.
+          This is unmasked flux: flux is computed for every location, not just building
+          rooftops. Invalid locations are stored as -9999: locations outside our coverage area
+          will be invalid, and a few locations inside the coverage area, where we were unable to
+          calculate flux, will also be invalid.</p>
+          } @else if (layerId == 'monthlyFlux'){
+        <p>The monthly flux map (sunlight on roofs, broken down by month) of the region. Values
+          are kWh/kW/year. The GeoTIFF imagery file pointed to by this URL will contain twelve
+          bands, corresponding to January...December, in order.</p>
+          } @else if (layerId == 'hourlyShade'){
+          <p>Twelve URLs for hourly shade, corresponding to January...December, in order. Each
+          GeoTIFF imagery file will contain 24 bands, corresponding to the 24 hours of the day.
+          Each pixel is a 32 bit integer, corresponding to the (up to) 31 days of that month; a
+          1 bit means that the corresponding location is able to see the sun at that day, of
+          that hour, of that month. Invalid locations are stored as -9999 (since this is
+          negative, it has bit 31 set, and no valid value could have bit 31 set as that would
+          correspond to the 32nd day of the month).</p>
+          }
+        </p>
+        <div *ngIf="layer?.palette !== undefined">
+          <div
+            class="h-2 outline rounded-sm"
+            [style.background]="'linear-gradient(to right, ' + renderPalette + ')'"
+          ></div>
+          <div class="flex justify-between pt-1 label-small">
+            <span>{{layer?.palette === undefined ? 'he' : 'hh'}}</span>
+            <span>{{layer?.palette === undefined ? 'he' : 'hh'}}</span>
+          </div>
+        </div>
+      </div>
+    </app-summary-card>
+  </div>
+</div>
+}
+
+
+
+
+
+@if (layer) {
+  <div class="absolute bottom-6 left-0 w-full">
+    <div class="md:mr-96 mr-80 grid place-items-center">
+      <div
+      class="flex items-center surface on-surface-text pr-4 text-center label-large rounded-full shadow-md"
+    >
+    @if (layer.id == 'monthlyFlux') {
+      <mat-slider  style="width: 100%!important;padding-left: 8px;" min="0" max="11">
+        <input matSliderThumb [value]="month" (valueChange)="onSliderChange($event)">
+      </mat-slider>
+      <span class="w-8 pl-2">{{monthNames[month]}}</span>
+    } @else if (layer.id == 'hourlyShade') {
+      <mat-slider  style="width: 100%!important;padding-left: 8px;" min="0" max="23">
+        <input matSliderThumb [value]="hour" (valueChange)="onSliderChange($event)">
+      </mat-slider>
+
+    <span class="w-24 whitespace-nowrap pl-2">
+      {{monthNames[month]}}
+      {{day}},
+      @if (hour == 0) {
+        12AM
+      } @else if (hour < 10) {
+        {{hour}}AM
+      } @else if (hour < 12) {
+        {{hour}}AM
+      } @else if (hour == 12) {
+        12PM
+      } @else if (hour < 22) {
+        {{hour - 12}}PM
+      } @else {
+        {{hour - 12}}PM
+      }
+    </span>
+  }
+
+    
+    </div>
+    </div>
+    </div>
+}

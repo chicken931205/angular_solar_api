@@ -1,0 +1,18 @@
+<table class="table-auto w-full body-medium">
+  @for (row of rows; track row) {
+  <tr>
+    <td class="primary-text py-2">
+      <span class="material-symbols-outlined">
+        {{ row.icon ?? "" }}
+      </span>
+    </td>
+    <th class="pl-2 text-left">
+      {{ row.name }}
+    </th>
+    <td class="pl-2 text-right">
+      <span>{{ row.value }}</span>
+      <span class="body-small">{{ row.units ?? "" }}</span>
+    </td>
+  </tr>
+  }
+</table>

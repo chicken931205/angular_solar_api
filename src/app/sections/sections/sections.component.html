@@ -1,0 +1,80 @@
+<div class="flex flex-col rounded-md shadow-md">
+  <!--
+  <ng-container *ngIf="geometryLibrary && map">
+    <app-building-insights-section
+      [expandedSection]="expandedSection"
+      [buildingInsights]="buildingInsights"
+      [configId]="configId"
+      [showPanels]="showPanels"
+      [panelCapacityWatts]="panelCapacityWattsInput"
+      [googleMapsApiKey]="googleMapsApiKey"
+      [geometryLibrary]="geometryLibrary"
+      [location]="location"
+      [map]="map"
+    >
+    </app-building-insights-section>
+  </ng-container>
+  <ng-container *ngIf="buildingInsights && configId !== undefined">
+-->
+  <!-- <mat-divider inset></mat-divider>
+  <app-data-layers-section
+    [expandedSection]="expandedSection"
+    [showPanels]="showPanels"
+    [googleMapsApiKey]="googleMapsApiKey"
+    [buildingInsights]="buildingInsights"
+    [map]="map"
+  >
+  </app-data-layers-section> -->
+  <!--
+    <mat-divider inset></mat-divider>
+    <app-solar-potential-section
+      *ngIf="buildingInsights !== undefined"
+      [expandedSection]="expandedSection"
+      [configId]="configId"
+      [monthlyAverageEnergyBillInput]="monthlyAverageEnergyBillInput"
+      [energyCostPerKwhInput]="energyCostPerKwhInput"
+      [panelCapacityWattsInput]="panelCapacityWattsInput"
+      [dcToAcDerateInput]="dcToAcDerateInput"
+      [solarPanelConfigs]="buildingInsights.solarPotential.solarPanelConfigs"
+      [defaultPanelCapacityWatts]="
+        buildingInsights['solarPotential'].panelCapacityWatts
+      "
+    >
+    </app-solar-potential-section>
+  </ng-container>
+</div>
+-->
+
+  <mat-accordion>
+    @if (map) {
+    <app-building-insights-section
+      [(buildingInsights)]="buildingInsights"
+      [(configId)]="configId"
+      [(showPanels)]="showPanels"
+      [(panelCapacityWatts)]="panelCapacityWattsInput"
+      [googleMapsApiKey]="googleMapsApiKey"
+      [location]="location"
+      [map]="map"
+    ></app-building-insights-section>
+    @if (buildingInsights && configId !== undefined) {
+    <app-data-layers-section
+      [(showPanels)]="showPanels"
+      [googleMapsApiKey]="googleMapsApiKey"
+      [buildingInsights]="buildingInsights"
+      [map]="map"
+    ></app-data-layers-section>
+
+    <app-solar-potential-section
+      [(configId)]="configId"
+      [(monthlyAverageEnergyBillInput)]="monthlyAverageEnergyBillInput"
+      [(energyCostPerKwhInput)]="energyCostPerKwhInput"
+      [(panelCapacityWattsInput)]="panelCapacityWattsInput"
+      [(dcToAcDerateInput)]="dcToAcDerateInput"
+      [solarPanelConfigs]="buildingInsights.solarPotential.solarPanelConfigs"
+      [defaultPanelCapacityWatts]="
+        buildingInsights.solarPotential.panelCapacityWatts
+      "
+    ></app-solar-potential-section>
+    } }
+  </mat-accordion>
+</div>

@@ -1,0 +1,16 @@
+<h2 mat-dialog-title>
+  <div class="flex items-center primary-text">
+    <mat-icon>{{ data.icon }}</mat-icon>
+    <b>&nbsp;{{ data.title }}</b>
+  </div>
+</h2>
+
+<mat-dialog-content>
+  <app-show
+    [value]="data.buildingInsights"
+    label="buildingInsightsResponse"
+  ></app-show>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-stroked-button (click)="closeDialog()">Close</button>
+</mat-dialog-actions>

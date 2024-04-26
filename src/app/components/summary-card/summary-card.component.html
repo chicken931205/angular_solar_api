@@ -1,0 +1,21 @@
+<div
+  class="grid justify-items-start surface on-surface-text p-4 rounded-lg shadow-lg"
+>
+  <div class="flex items-center primary-text">
+    <span class="material-symbols-outlined w-8">
+      {{ icon }}
+    </span>
+    <p class="body-large">
+      <b>{{ title }}</b>
+    </p>
+  </div>
+  <div class="py-3 w-full pt-2">
+    <mat-divider />
+  </div>
+  <div class="w-full secondary-text">
+    <app-table [rows]="rows" />
+  </div>
+  <div class="px-3">
+    <ng-content></ng-content>
+  </div>
+</div>

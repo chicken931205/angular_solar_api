@@ -1,0 +1,42 @@
+<div class="flex flex-col font-mono whitespace-nowrap">
+  <div class="flex flex-row w-full">
+    @if (collapsed && items !== undefined) {
+    <button (click)="expanded = !expanded">
+      <mat-icon>{{ expanded ? "arrow_drop_down" : "arrow_right" }}</mat-icon>
+    </button>
+    } @else {
+    <div><mat-icon>&nbsp;</mat-icon></div>
+    } @if (key !== undefined) {
+    <span class="font-bold">{{ key }}:&nbsp;</span>
+    } @if (label) {
+    <span>{{ label }}</span>
+    } @else if (isValid) {
+    <span>{{ value }}</span>
+    } @else if (value === null) {
+    <span>{{ value }}</span>
+    } @else if (isArray(value)) {
+    <span class="font-sans italic">({{ value.length }}) {{ summary }}</span>
+    } @else {
+    <span class="font-sans italic">{{ summary }}</span>
+    }
+  </div>
+
+  @if (!collapsed || expanded) {
+  <div class="flex flex-col ml-8 pb-6 max-h-72 overflow-auto">
+    @if (isArray(value)) {
+    <span class="italic">length: {{ value.length }}</span>
+    }
+    <div
+      [style]="
+        collapsed
+          ? 'border-left: solid; border-color: var(--md-sys-color-outline-variant);'
+          : ''
+      "
+    >
+      @for (each of items; track each) {
+      <app-show [key]="each.k" [value]="each.v" [collapsed]="true"></app-show>
+      }
+    </div>
+  </div>
+  }
+</div>

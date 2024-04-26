@@ -1,0 +1,158 @@
+@if (requestError) {
+
+<div class="error-container on-error-container-text">
+  <mat-expansion-panel
+    (opened)="expanded = true"
+    (closed)="expanded = false"
+    style="background-color: #fcdfdc"
+  >
+    <mat-expansion-panel-header class="pt-4">
+      <mat-panel-title>
+        <span class="material-symbols-outlined">{{ icon }}</span>
+        <p>{{ title }}</p>
+      </mat-panel-title>
+      <mat-panel-description>{{
+        requestError.error.status
+      }}</mat-panel-description>
+    </mat-expansion-panel-header>
+
+    <div class="grid place-items-center py-2 space-y-4">
+      <div class="grid place-items-center">
+        <p class="body-medium">
+          Error on <code>buildingInsights</code> request
+        </p>
+        <p class="title-large">ERROR {{ requestError.error.code }}</p>
+        <p class="body-medium">
+          <code>{{ requestError.error.status }}</code>
+        </p>
+        <p class="label-medium">{{ requestError.error.message }}</p>
+      </div>
+      <button
+        mat-stroked-button
+        extended
+        color="danger"
+        (click)="showSolarPotential(location)"
+      >
+        Retry
+        <mat-icon>refresh</mat-icon>
+      </button>
+    </div>
+  </mat-expansion-panel>
+</div>
+
+} @else if (!buildingInsights) {
+<div class="grid py-8 place-items-center">
+  <mat-spinner indeterminate></mat-spinner>
+</div>
+} @else if (configId !== undefined && panelConfig) {
+<mat-expansion-panel (opened)="expanded = true" (closed)="expanded = false">
+  <mat-expansion-panel-header class="pt-4">
+    <mat-panel-title>
+      <span class="material-symbols-outlined">{{ icon }}</span>
+      <p>{{ title }}</p>
+    </mat-panel-title>
+    <mat-panel-description>{{ yearlyEnerge }}</mat-panel-description>
+  </mat-expansion-panel-header>
+
+  <div class="flex flex-col space-y-2 px-2">
+    <span class="outline-text label-medium">
+      <b>{{ yearlyEnerge }}</b> provides data on the location, dimensions &
+      solar potential of a building.
+    </span>
+
+    <div>
+      <table class="table-auto w-full body-medium secondary-text">
+        <tr>
+          <td class="primary-text">
+            <span class="material-symbols-outlined">solar_power</span>
+          </td>
+          <th class="pl-2 text-left">Panels count</th>
+          <td class="pl-2 text-right">
+            <span>{{ panelConfig.panelsCount }} panels</span>
+          </td>
+        </tr>
+      </table>
+
+      <mat-slider
+        style="width: 100% !important"
+        min="0"
+        max="{{ panelsMaxCount }}"
+      >
+        <input
+          [formControl]="panelsCountInput"
+          matSliderThumb
+          [(ngModel)]="configId"
+          (change)="onSliderChange()"
+        />
+      </mat-slider>
+    </div>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Panel capacity</mat-label>
+      <input
+        matInput
+        type="number"
+        min="4"
+        [(ngModel)]="panelCapacityWatts"
+        (change)="onPanelCapacityChange($event)"
+      />
+      <span matTextSuffix>&nbsp;Watts</span>
+    </mat-form-field>
+
+    <mat-slide-toggle
+      [(ngModel)]="showPanelsToggle"
+      (change)="onShowPanelsChange()"
+    >
+      Solar panels</mat-slide-toggle
+    >
+
+    <div class="grid justify-items-end">
+      <button
+        mat-raised-button
+        style="background-color: #ebddf6; color: black"
+        (click)="openDialog()"
+      >
+        API Response
+      </button>
+      <!-- <md-filled-tonal-button role={undefined} on:click={() => apiResponseDialog.show()}>
+        API response
+      </md-filled-tonal-button> -->
+    </div>
+  </div>
+</mat-expansion-panel>
+} @if (expanded == true) {
+
+<div class="absolute top-0 left-0 w-72">
+  <div class="flex flex-col space-y-2 m-2">
+    <app-summary-card
+      [icon]="icon"
+      [title]="title"
+      [rows]="summaryCardRows"
+    ></app-summary-card>
+
+    <div class="p-4 w-full surface on-surface-text rounded-lg shadow-md">
+      <div class="flex justify-around">
+        <app-gauge
+          icon="solar_power"
+          title="Panels count"
+          [label]="showNumber(panelConfig?.panelsCount ?? 0)"
+          [labelSuffix]="'/' + showNumber(solarPanels.length)"
+          [max]="solarPanels.length"
+          [value]="panelConfig?.panelsCount ?? 0"
+        ></app-gauge>
+
+        <app-gauge
+          icon="energy_savings_leaf"
+          title="Yearly energy"
+          [label]="
+            showNumber(panelConfig?.yearlyEnergyDcKwh ?? 0 * panelCapacityRatio)
+          "
+          labelSuffix="KWh"
+          [max]="yearEnergyMax"
+          [value]="(panelConfig?.yearlyEnergyDcKwh ?? 0) * panelCapacityRatio"
+        ></app-gauge>
+      </div>
+    </div>
+  </div>
+</div>
+}

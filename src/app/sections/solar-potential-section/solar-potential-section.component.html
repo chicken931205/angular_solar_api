@@ -1,0 +1,229 @@
+<mat-expansion-panel (opened)="expanded = true" (closed)="expanded = false">
+  <mat-expansion-panel-header
+    style="padding-top: 20px !important; padding-bottom: 20px !important"
+  >
+    <mat-panel-title>
+      <span class="material-symbols-outlined">{{ icon }}</span>
+      <p>{{ title }}</p>
+    </mat-panel-title>
+    <mat-panel-description style="font-size: 12px"
+      >Values are only placeholders.<br />Update with your own
+      values.</mat-panel-description
+    >
+  </mat-expansion-panel-header>
+
+  <div class="flex flex-col space-y-4 pt-1">
+    <div class="p-4 mb-4 surface-variant outline-text rounded-lg">
+      <p class="relative inline-flex items-center space-x-2">
+        <span class="material-symbols-outlined md:w-6 w-8">info</span>
+        <span>
+          Projections use a
+          <a
+            class="primary-text"
+            href="https://developers.google.com/maps/documentation/solar/calculate-costs-us"
+            target="_blank"
+          >
+            USA financial model
+            <span class="material-symbols-outlined text-sm">open_in_new</span>
+          </a>
+        </span>
+      </p>
+    </div>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Monthly average energy bill</mat-label>
+      <input
+        matInput
+        [(ngModel)]="monthlyAverageEnergyBillInput"
+        (change)="updateConfig()"
+        type="number"
+      />
+      <span matTextPrefix>$&nbsp;</span>
+    </mat-form-field>
+
+    <div class="inline-flex items-center space-x-2">
+      <div class="grow">
+        <table class="table-auto w-full body-medium secondary-text">
+          <tr>
+            <td class="primary-text">
+              <span class="material-symbols-outlined">solar_power</span>
+            </td>
+            <th class="pl-2 text-left">Panels count</th>
+            <td class="pl-2 text-right">
+              <span
+                >{{
+                  solarPanelConfigs[configId]?.panelsCount ?? 0
+                }}
+                panels</span
+              >
+            </td>
+          </tr>
+        </table>
+        <mat-slider
+          style="width: 100% !important"
+          min="0"
+          max="{{ panelsMaxCount }}"
+        >
+          <input
+            matSliderThumb
+            [(ngModel)]="configId"
+            (change)="onSliderChange()"
+          />
+        </mat-slider>
+      </div>
+      <button mat-icon-button (click)="updateConfig()">
+        <span class="material-symbols-outlined">sync</span>
+      </button>
+    </div>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Energy cost per kWh</mat-label>
+      <input
+        matInput
+        [(ngModel)]="energyCostPerKwhInput"
+        (change)="updateConfig()"
+        type="number"
+      />
+      <span matTextPrefix>$&nbsp;</span>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Solar incentives</mat-label>
+      <input
+        matInput
+        [(ngModel)]="solarIncentives"
+        (change)="updateConfig()"
+        type="number"
+      />
+      <span matTextPrefix>$&nbsp;</span>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Installation cost per Watt</mat-label>
+      <input
+        matInput
+        [(ngModel)]="installationCostPerWatt"
+        (change)="updateConfig()"
+        type="number"
+      />
+      <span matTextPrefix>$&nbsp;</span>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Panel capacity</mat-label>
+      <input
+        matInput
+        [(ngModel)]="panelCapacityWattsInput"
+        (change)="updateConfig()"
+        type="number"
+      />
+      <span matTextSuffix>&nbsp;Watts</span>
+    </mat-form-field>
+
+    <div class="flex flex-col items-center w-full">
+      <button mat-button (click)="showAdvancedSettings = !showAdvancedSettings">
+        {{ showAdvancedSettings ? "Hide" : "Show" }} advanced settings
+        <mat-icon iconPositionEnd>
+          {{ showAdvancedSettings ? "expand_less" : "expand_more" }}
+        </mat-icon>
+      </button>
+    </div>
+
+    @if (showAdvancedSettings) {
+    <div class="flex flex-col space-y-4">
+      <mat-form-field appearance="outline">
+        <mat-label>Installation lifespan</mat-label>
+        <input
+          matInput
+          [(ngModel)]="installationLifeSpan"
+          (change)="updateConfig()"
+          type="number"
+        />
+        <span matTextSuffix>&nbsp;years</span>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>DC to AC conversion </mat-label>
+        <input
+          matInput
+          [(ngModel)]="dcToAcDerateInput"
+          (change)="updateConfig()"
+          type="number"
+        />
+        <span matTextSuffix>&nbsp;%</span>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Panel efficiency decline per year</mat-label>
+        <input
+          matInput
+          [(ngModel)]="efficiencyDepreciationFactor"
+          (change)="updateConfig()"
+          type="number"
+        />
+        <span matTextSuffix>&nbsp;%</span>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Energy cost increase per year</mat-label>
+        <input
+          matInput
+          [(ngModel)]="costIncreaseFactor"
+          (change)="updateConfig()"
+          type="number"
+        />
+        <span matTextSuffix>&nbsp;%</span>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Discount rate per year</mat-label>
+        <input
+          matInput
+          [(ngModel)]="discountRate"
+          (change)="updateConfig()"
+          type="number"
+        />
+        <span matTextSuffix>&nbsp;%</span>
+      </mat-form-field>
+    </div>
+    }
+
+    <div class="grid justify-items-end">
+      <a
+        mat-stroked-button
+        href="https://developers.google.com/maps/documentation/solar/calculate-costs-us"
+        target="_blank"
+      >
+        More details
+        <mat-icon iconPositionEnd>open_in_new</mat-icon>
+      </a>
+    </div>
+  </div>
+</mat-expansion-panel>
+
+@if (expanded == true && solarPanelConfigs !== undefined && configId !==
+undefined) {
+<div class="absolute top-0 left-0">
+  <div class="flex flex-col space-y-2 m-2">
+    <app-summary-card
+      [icon]="icon"
+      [title]="title"
+      [rows]="summaryCardRows"
+    ></app-summary-card>
+  </div>
+  <div class="mx-2 p-4 surface on-surface-text rounded-lg shadow-lg">
+    <!-- <google-chart
+      #myChart
+      [title]="title"
+      [data]="chartData"
+      [columns]="chartColumns"
+      style="width: 100%; height: 100%"
+    >
+    </google-chart> -->
+    <div #costChart></div>
+    <div class="w-full secondary-text">
+      <app-table [rows]="tableRows"></app-table>
+    </div>
+  </div>
+</div>
+}

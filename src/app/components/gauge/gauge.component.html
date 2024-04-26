@@ -1,0 +1,35 @@
+<div class="grid place-items-center">
+  <p class="p-2 body-large">{{ title }}</p>
+
+  <div style="position: relative; width: 72px; height: 72px">
+    <mat-progress-spinner
+      mode="determinate"
+      [value]="percentValue"
+      [diameter]="72"
+      style="position: absolute; top: 0; left: 0"
+    ></mat-progress-spinner>
+    <!-- Your content goes here -->
+    <div
+      style="
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      "
+    >
+      <!-- Your element to be placed inside the progress-spinner -->
+      <button mat-icon-button class="absolute inset-0 m-auto">
+        <span class="material-symbols-outlined primary-text">
+          {{ icon }}
+        </span>
+      </button>
+    </div>
+  </div>
+
+  <p class="p-2 body-medium">
+    <span class="primary-text">
+      <b>{{ label }}</b>
+    </span>
+    <span>{{ labelSuffix }}</span>
+  </p>
+</div>
